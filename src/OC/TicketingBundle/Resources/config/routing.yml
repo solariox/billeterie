@@ -1,0 +1,16 @@
+
+oc_ticketing_home:
+    path:     /
+    defaults: { _controller: OCTicketingBundle:Index:index }
+    
+oc_ticketing_check:
+    path:     /check
+    defaults: { _controller: OCTicketingBundle:Index:check }
+    
+oc_ticketing_payment:
+    path:     /payment
+    defaults: { _controller: OCTicketingBundle:Index:payment }
+
+oc_ticketing_valid:
+    path:     /valid
+    defaults: { _controller: OCTicketingBundle:Index:valid }
