@@ -5,7 +5,7 @@ oc_ticketing_home:
     
 oc_ticketing_check:
     path:     /check
-    defaults: { _controller: OCTicketingBundle:Index:check }
+    defaults: { _controller: OCTicketingBundle:Check:check }
     
 oc_ticketing_payment:
     path:     /payment
