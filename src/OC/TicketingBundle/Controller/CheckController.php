@@ -18,7 +18,7 @@ class CheckController extends Controller
 {
     public function checkAction ( Request $request)
     {
-
+           return $this->render('OCTicketingBundle:Tunnel:check.html.twig');
 
     }
 

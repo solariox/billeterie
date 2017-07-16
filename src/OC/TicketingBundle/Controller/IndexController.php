@@ -25,28 +25,19 @@ class IndexController extends Controller
         //on crée un objet Ticket
         $ticket = new Ticket();
 
-        $form = $this->get('form.factory')->create(CommandeType::class, $commande);
-        //$form = $this->createForm(AdvertType::class, $advert) equivalent
+        $form = $this->get('form.factory')->create(TicketType::class, $ticket);
 
          if($request->isMethod('POST')){
             // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) {
-            // On enregistre notre objet $ticket dans la base de données, par exemple
-                $ticket->setOwner('coucou');
-                $ticket->setType('Normal');
                 
-                $commande->setTicketId($ticket->getId());
-                $commande->setPrice(30);
-            
-                $em->persist($commande);
-                $em->persist($ticket);
-                $em->flush();
+            // On enregistre notre objet $ticket dans la base de données, par exemple
 
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 // On redirige vers la page de visualisation de l'annonce nouvellement créée
                 return $this->redirectToRoute('oc_ticketing_check', array('id' => $commande->getId()));
-                }
-         }
+            }
+        }
 
             return $this->render('OCTicketingBundle:Tunnel:index.html.twig', array(
         'form' => $form->createView(),

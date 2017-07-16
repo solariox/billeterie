@@ -3,23 +3,28 @@
 namespace OC\TicketingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-/**
- * TicketType
- */
 
 /**
- * @ORM\Table(name="oc_tickeType")
- * @ORM\Entity(repositoryClass="OC\TicketingBundle\Repository\TicketTypeRepository")
+ * Tarif
+ *
+ * @ORM\Table(name="tarif")
+ * @ORM\Entity(repositoryClass="OC\TicketingBundle\Repository\TarifRepository")
  */
-class TicketType
+class Tarif
 {
     /**
      * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
@@ -39,7 +44,7 @@ class TicketType
      *
      * @param string $name
      *
-     * @return TicketType
+     * @return Tarif
      */
     public function setName($name)
     {

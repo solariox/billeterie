@@ -22,13 +22,14 @@ class TicketType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-       ->add('categories', EntityType::class, array(
-            'class'        => 'OCTicketingBundle:TicketType',
+
+       ->add('tarif', EntityType::class, array(//on fait une selection
+            'class'        => 'OCTicketingBundle:Tarif',//parmis tout les types de tickets possibles
             'choice_label' => 'name',
             'multiple'     => false,
         ))
-        ->add('date')
-        ->add('owner');
+        ->add('owner')
+        ->add('bookdate');
     }
     
     /**

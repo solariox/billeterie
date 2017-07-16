@@ -6,36 +6,48 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Ticket
- */
-
- /**
- * @ORM\Entity
+ *
+ * @ORM\Table(name="ticket")
+ * @ORM\Entity(repositoryClass="OC\TicketingBundle\Repository\TicketRepository")
  */
 class Ticket
 {
     /**
      * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var string
+     * @var int
+     * @ORM\ManyToOne(targetEntity="OC\TicketingBundle\Entity\Commande", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
+    private $commandeId;
+
     /**
-    * @ORM\ManyToMany(targetEntity="OC\TicketingBundle\Entity\TicketType", cascade={"persist"})
-    * @ORM\JoinTable(name="oc_ticket_type")
-    */
-    private $type;
+     * @var string
+     *
+     * @ORM\Column(name="owner", type="string", length=255)
+     */
+    private $owner;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="tarif", type="boolean")
+     */
+    private $tarif;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="bookdate", type="date")
      */
-    private $date;
-
-    /**
-     * @var string
-     */
-    private $owner;
+    private $bookdate;
 
 
     /**
@@ -49,51 +61,27 @@ class Ticket
     }
 
     /**
-     * Set type
+     * Set commandeId
      *
-     * @param string $type
+     * @param integer $commandeId
      *
      * @return Ticket
      */
-    public function setType($type)
+    public function setCommandeId($commandeId)
     {
-        $this->type = $type;
+        $this->commandeId = $commandeId;
 
         return $this;
     }
 
     /**
-     * Get type
+     * Get commandeId
      *
-     * @return string
+     * @return int
      */
-    public function getType()
+    public function getCommandeId()
     {
-        return $this->type;
-    }
-
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     *
-     * @return Ticket
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
+        return $this->commandeId;
     }
 
     /**
@@ -118,6 +106,54 @@ class Ticket
     public function getOwner()
     {
         return $this->owner;
+    }
+
+    /**
+     * Set tarif
+     *
+     * @param boolean $tarif
+     *
+     * @return Ticket
+     */
+    public function setTarif($tarif)
+    {
+        $this->tarif = $tarif;
+
+        return $this;
+    }
+
+    /**
+     * Get tarif
+     *
+     * @return bool
+     */
+    public function getTarif()
+    {
+        return $this->tarif;
+    }
+
+    /**
+     * Set bookdate
+     *
+     * @param \DateTime $bookdate
+     *
+     * @return Ticket
+     */
+    public function setBookdate($bookdate)
+    {
+        $this->bookdate = $bookdate;
+
+        return $this;
+    }
+
+    /**
+     * Get bookdate
+     *
+     * @return \DateTime
+     */
+    public function getBookdate()
+    {
+        return $this->bookdate;
     }
 }
 

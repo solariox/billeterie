@@ -6,27 +6,32 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Commande
- */
-
- /**
- * @ORM\Entity
+ *
+ * @ORM\Table(name="commande")
+ * @ORM\Entity(repositoryClass="OC\TicketingBundle\Repository\CommandeRepository")
  */
 class Commande
 {
     /**
      * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var int
-     * @ORM\ManyToOne(targetEntity="OC\TicketingBundle\Entity\Ticket", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
      */
-    private $ticketId;
+    private $email;
 
     /**
-     * @var int
+     * @var string
+     *
+     * @ORM\Column(name="price", type="string", length=255)
      */
     private $price;
 
@@ -42,33 +47,33 @@ class Commande
     }
 
     /**
-     * Set ticketId
+     * Set email
      *
-     * @param integer $ticketId
+     * @param string $email
      *
      * @return Commande
      */
-    public function setTicketId($ticketId)
+    public function setEmail($email)
     {
-        $this->ticketId = $ticketId;
+        $this->email = $email;
 
         return $this;
     }
 
     /**
-     * Get ticketId
+     * Get email
      *
-     * @return int
+     * @return string
      */
-    public function getTicketId()
+    public function getEmail()
     {
-        return $this->ticketId;
+        return $this->email;
     }
 
     /**
      * Set price
      *
-     * @param integer $price
+     * @param string $price
      *
      * @return Commande
      */
@@ -82,7 +87,7 @@ class Commande
     /**
      * Get price
      *
-     * @return int
+     * @return string
      */
     public function getPrice()
     {
