@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use OC\TIcketingBundle\Repository\TicketRepository;
@@ -32,7 +33,7 @@ class CommandeType extends AbstractType
         'allow_add'    => true,
         'allow_delete' => true
         ))
-        ->add('email',TextType::class)
+        ->add('email',EmailType::class)
         ->add('save', SubmitType::class);
     }
     

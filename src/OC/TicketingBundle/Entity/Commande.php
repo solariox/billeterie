@@ -3,7 +3,7 @@
 namespace OC\TicketingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Commande
  *
@@ -21,17 +21,27 @@ class Commande
      */
     private $id;
 
+
     /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @var int
+     * @ORM\OneToMany(targetEntity="OC\TicketingBundle\Entity\Ticket",mappedBy="commandeId",cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $email;
+    private $tickets;
+
 
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\Email
+     */
+    private $email;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="price", type="integer")
      */
     private $price;
 
@@ -45,6 +55,31 @@ class Commande
     {
         return $this->id;
     }
+
+  /**
+     * Set tickets
+     *
+     * @param string $tickets
+     *
+     * @return Commande
+     */
+    public function setTickets($tickets)
+    {
+        $this->tickets = $tickets;
+
+        return $this;
+    }
+
+    /**
+     * Get tickets
+     *
+     * @return string
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
 
     /**
      * Set email
@@ -73,10 +108,11 @@ class Commande
     /**
      * Set price
      *
-     * @param string $price
+     * @param int $price
      *
      * @return Commande
      */
+
     public function setPrice($price)
     {
         $this->price = $price;
@@ -87,11 +123,41 @@ class Commande
     /**
      * Get price
      *
-     * @return string
+     * @return int
      */
     public function getPrice()
     {
         return $this->price;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tickets = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add ticket
+     *
+     * @param \OC\TicketingBundle\Entity\Ticket $ticket
+     *
+     * @return Commande
+     */
+    public function addTicket(\OC\TicketingBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets[] = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Remove ticket
+     *
+     * @param \OC\TicketingBundle\Entity\Ticket $ticket
+     */
+    public function removeTicket(\OC\TicketingBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets->removeElement($ticket);
+    }
+}

@@ -1,3 +1,14 @@
-<p> vous avez commandé ça jiofdgdsfjgkdsfhgpjiosfdghsfdpkjghsfd </p>
+{% extends "OCTicketingBundle::layout.html.twig" %}
+{% block title %}
+   Page d'accueil - {{ parent()}}
+{% endblock %}
 
-<a href="{{ path('oc_ticketing_payment') }}">Passer à la boutique</a></li>
+{% block body %}
+    <h3>Récapitulatif de votre commande</h3>
+
+    {% for ticket in commande.tickets %}
+        <strong> Ticket de {{ticket.owner}} </strong>
+        <p> pour le {{ticket.bookdate|date('Y-m-d')}}</p>
+    {% endfor %}
+
+{% endblock %}

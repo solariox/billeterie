@@ -1,4 +1,5 @@
 {% extends "OCTicketingBundle::layout.html.twig" %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% block title %}
   Page d'accueil - {{ parent() }}
 {% endblock %}
@@ -13,6 +14,7 @@
 
 <a href="#" id="add_ticket" class="btn btn-default">Ajouter un ticket</a>
 </div>
+
 
 <p>
 <a href="{{ path('oc_ticketing_check') }}">Passer à la boutique</a></li>

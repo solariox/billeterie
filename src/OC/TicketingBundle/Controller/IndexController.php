@@ -17,26 +17,21 @@ class IndexController extends Controller
     public function indexAction ( Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $this->get('session')->clear();
 
         //on crée un objet Commande
         $commande = new Commande();
 
-        //on crée un objet Ticket
-        $ticket = new Ticket();
+        $form = $this->get('form.factory')->create(CommandeType::class, $commande);
 
-        $form = $this->get('form.factory')->create(TicketType::class, $ticket);
+
 
          if($request->isMethod('POST')){
+            $form->handleRequest($request);
             // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) {
-                
-            // On enregistre notre objet $ticket dans la base de données, par exemple
-
-                $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-                // On redirige vers la page de visualisation de l'annonce nouvellement créée
-                return $this->redirectToRoute('oc_ticketing_check', array('id' => $commande->getId()));
-            }
+                $request->getSession()->set("commande", $commande);
+                return $this->redirectToRoute('oc_ticketing_check');
+            }    
         }
 
             return $this->render('OCTicketingBundle:Tunnel:index.html.twig', array(
@@ -45,9 +40,22 @@ class IndexController extends Controller
 
     }
 
-    public function checkAction()
+    public function checkAction(Request $request)
     {
-        
+        $nouvelle_commande = $request->getSession()->get("commande");
+
+        var_dump($nouvelle_commande);
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            // On vérifie que les valeurs entrées sont correctes
+            if ($form->isValid()) {
+                $request->getSession()->set("commande", $commande);
+                return $this->redirectToRoute('oc_ticketing_payment');
+            }    
+        }
+
+            return $this->render('OCTicketingBundle:Tunnel:check.html.twig', array(
+        'commande' => $nouvelle_commande));
     }
 
     public function paymentAction()

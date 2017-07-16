@@ -3,6 +3,8 @@
 namespace OC\TicketingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Ticket
@@ -23,7 +25,7 @@ class Ticket
 
     /**
      * @var int
-     * @ORM\ManyToOne(targetEntity="OC\TicketingBundle\Entity\Commande", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="OC\TicketingBundle\Entity\Commande",inversedBy="tickets", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $commandeId;
@@ -35,17 +37,34 @@ class Ticket
      */
     private $owner;
 
+     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="ownerBirthday", type="date")
+     * @Assert\DateTime()
+     */
+    private $ownerBirthday;
+
     /**
      * @var bool
      *
-     * @ORM\Column(name="tarif", type="boolean")
+     * @ORM\Column(name="reduced", type="boolean")
      */
-    private $tarif;
+    private $reduced;
+    
+     /**
+     * @var bool
+     *
+     * @ORM\Column(name="halfday", type="boolean")
+     */
+    private $halfday;
+
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="bookdate", type="date")
+     * @Assert\DateTime()
      */
     private $bookdate;
 
@@ -155,5 +174,76 @@ class Ticket
     {
         return $this->bookdate;
     }
-}
 
+    /**
+     * Set ownerBirthday
+     *
+     * @param \DateTime $ownerBirthday
+     *
+     * @return Ticket
+     */
+    public function setOwnerBirthday($ownerBirthday)
+    {
+        $this->ownerBirthday = $ownerBirthday;
+
+        return $this;
+    }
+
+    /**
+     * Get ownerBirthday
+     *
+     * @return \DateTime
+     */
+    public function getOwnerBirthday()
+    {
+        return $this->ownerBirthday;
+    }
+
+    /**
+     * Set reduced
+     *
+     * @param boolean $reduced
+     *
+     * @return Ticket
+     */
+    public function setReduced($reduced)
+    {
+        $this->reduced = $reduced;
+
+        return $this;
+    }
+
+    /**
+     * Get reduced
+     *
+     * @return boolean
+     */
+    public function getReduced()
+    {
+        return $this->reduced;
+    }
+
+    /**
+     * Set halfday
+     *
+     * @param boolean $halfday
+     *
+     * @return Ticket
+     */
+    public function setHalfday($halfday)
+    {
+        $this->halfday = $halfday;
+
+        return $this;
+    }
+
+    /**
+     * Get halfday
+     *
+     * @return boolean
+     */
+    public function getHalfday()
+    {
+        return $this->halfday;
+    }
+}
