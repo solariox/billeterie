@@ -29,6 +29,13 @@ class Commande
      */
     private $tickets;
 
+     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="ownerBirthday", type="date")
+     * @Assert\DateTime()
+     */
+    private $orderDate;
 
     /**
      * @var string
@@ -159,5 +166,29 @@ class Commande
     public function removeTicket(\OC\TicketingBundle\Entity\Ticket $ticket)
     {
         $this->tickets->removeElement($ticket);
+    }
+
+    /**
+     * Set orderDate
+     *
+     * @param \DateTime $orderDate
+     *
+     * @return Commande
+     */
+    public function setOrderDate($orderDate)
+    {
+        $this->orderDate = $orderDate;
+
+        return $this;
+    }
+
+    /**
+     * Get orderDate
+     *
+     * @return \DateTime
+     */
+    public function getOrderDate()
+    {
+        return $this->orderDate;
     }
 }

@@ -23,8 +23,6 @@ class IndexController extends Controller
 
         $form = $this->get('form.factory')->create(CommandeType::class, $commande);
 
-
-
          if($request->isMethod('POST')){
             $form->handleRequest($request);
             // On vérifie que les valeurs entrées sont correctes
@@ -33,7 +31,6 @@ class IndexController extends Controller
                 return $this->redirectToRoute('oc_ticketing_check');
             }    
         }
-
             return $this->render('OCTicketingBundle:Tunnel:index.html.twig', array(
         'form' => $form->createView(),
         ));
@@ -42,7 +39,14 @@ class IndexController extends Controller
 
     public function checkAction(Request $request)
     {
+
+
         $nouvelle_commande = $request->getSession()->get("commande");
+
+        // On récupère le service de calcul de prix
+        $PriceCalculator = $this->container->get('oc_ticketing.pricecalculator');
+        $commande_price = $PriceCalculator->calculate($nouvelle_commande->getTickets());
+        $nouvelle_commande->setPrice($commande_price);
 
         var_dump($nouvelle_commande);
         if($request->isMethod('POST')){

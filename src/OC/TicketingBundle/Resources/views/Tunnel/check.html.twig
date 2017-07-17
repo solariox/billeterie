@@ -10,5 +10,8 @@
         <strong> Ticket de {{ticket.owner}} </strong>
         <p> pour le {{ticket.bookdate|date('Y-m-d')}}</p>
     {% endfor %}
+    <p> les tickets seront envoyé à l'adresse {{commande.email}}. 
+    Le prix de la commande sera de {{commande.price}} €. </p>
 
+    <a href="{{ path('oc_ticketing_payment') }}"<button type="button" class="btn btn-primary">Regler la commande</button></a>
 {% endblock %}
