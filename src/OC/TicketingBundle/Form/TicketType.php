@@ -25,9 +25,16 @@ class TicketType extends AbstractType
     {
         $builder
         ->add('owner', TextType::class)
-        ->add('ownerBirthday', DateType::class)
-        ->add('bookdate', DateType::class)
+        ->add('ownerBirthday', TextType::class, array(
+            'attr' => array('class' => 'datepickerBirthday', 
+                            'type' => 'date')))
+        ->add('bookdate', TextType::class, array(
+            'attr' => array('class' => 'datepickerBookdate', 
+                            'type' => 'date')))
+                            
         ->add('reduced', CheckboxType::class, array(
+            'attr' => array('class' => 'reduced',
+                            'onchange'=>'handleChange(this)'),
             'label'    => 'Tarif réduit ',
             'required' => false,))
         ->add('halfday', CheckboxType::class, array(

@@ -60,6 +60,15 @@ class Ticket
     private $halfday;
 
 
+     /**
+     * @var int
+     *
+     * @ORM\Column(name="price", type="integer")
+     */
+    private $price;
+
+
+
     /**
      * @var \DateTime
      *
@@ -125,30 +134,6 @@ class Ticket
     public function getOwner()
     {
         return $this->owner;
-    }
-
-    /**
-     * Set tarif
-     *
-     * @param boolean $tarif
-     *
-     * @return Ticket
-     */
-    public function setTarif($tarif)
-    {
-        $this->tarif = $tarif;
-
-        return $this;
-    }
-
-    /**
-     * Get tarif
-     *
-     * @return bool
-     */
-    public function getTarif()
-    {
-        return $this->tarif;
     }
 
     /**
@@ -245,5 +230,29 @@ class Ticket
     public function getHalfday()
     {
         return $this->halfday;
+    }
+
+    /**
+     * Set price
+     *
+     * @param integer $price
+     *
+     * @return Ticket
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return integer
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 }

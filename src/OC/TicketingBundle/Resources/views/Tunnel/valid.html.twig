@@ -1,2 +1,12 @@
+{% extends "OCTicketingBundle::layout.html.twig" %}
+{% block title %}
+   Transaction validée - {{ parent()}}
+{% endblock %}
+
+{% block body %}
+
+
 <p>Merci pour l'argent </p>
 <a href="{{ path('oc_ticketing_home') }}">retour à l'accueil</a></li>
+
+{% endblock %}

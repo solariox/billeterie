@@ -11,6 +11,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use OC\TicketingBundle\Form\CommandeType;
 use OC\TicketingBundle\Form\TicketType;
+// Import Non-Namespaced Stripe Library
+use Stripe;
 
 class IndexController extends Controller
 {
@@ -27,6 +29,7 @@ class IndexController extends Controller
             $form->handleRequest($request);
             // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) {
+                $commande->setOrderDate(new \DateTime());
                 $request->getSession()->set("commande", $commande);
                 return $this->redirectToRoute('oc_ticketing_check');
             }    
@@ -45,8 +48,8 @@ class IndexController extends Controller
 
         // On récupère le service de calcul de prix
         $PriceCalculator = $this->container->get('oc_ticketing.pricecalculator');
-        $commande_price = $PriceCalculator->calculate($nouvelle_commande->getTickets());
-        $nouvelle_commande->setPrice($commande_price);
+        $PriceCalculator->calculate($nouvelle_commande);
+        
 
         var_dump($nouvelle_commande);
         if($request->isMethod('POST')){
@@ -54,7 +57,7 @@ class IndexController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) {
                 $request->getSession()->set("commande", $commande);
-                return $this->redirectToRoute('oc_ticketing_payment');
+                return $this->redirectToRoute('oc_ticketing_payment');  
             }    
         }
 
@@ -62,13 +65,29 @@ class IndexController extends Controller
         'commande' => $nouvelle_commande));
     }
 
-    public function paymentAction()
+    public function paymentAction(Request $request)
     {
-         return $this->render('OCTicketingBundle:Tunnel:payment.html.twig');
+        $commande = $request->getSession()->get("commande");
+
+            return $this->render('OCTicketingBundle:Tunnel:payment.html.twig', array(
+        'commande' => $commande));
     }
 
-    public function ValidAction()
+    public function ValidAction(Request $request)
     {
+        $commande = $request->getSession()->get("commande");
+        // Set your API key
+        \Stripe\Stripe::setApiKey("sk_test_r8dPHfTJDMI5duQunjSxvqng");
+        try {
+            \Stripe\Charge::create([
+                'amount' => $commande->getPrice() * 100,
+                'currency' => 'eur',
+                'card' => $_POST['stripeToken'],
+                'description' => 'blabla'
+            ]);
+        } catch (\Stripe\CardError $e) {
+           var_dump("error");
+        }
          return $this->render('OCTicketingBundle:Tunnel:valid.html.twig');
     }
 }
