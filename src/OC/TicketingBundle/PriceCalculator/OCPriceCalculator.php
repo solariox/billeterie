@@ -42,4 +42,18 @@ class OCPriceCalculator
     
     $commande->setPrice($totalPrice);
   }
+
+  public function SetToDate(Commande $commande)
+  {
+    foreach($commande->getTickets() as $ticket){
+      $birthday = DateTime::createFromFormat("d-m-Y", $ticket->getOwnerBirthday());
+      $ticket->setOwnerBirthday($birthday);
+    
+      $bookdate = DateTime::createFromFormat("d-m-Y", $ticket->getBookdate());
+      $ticket->setBookdate($bookdate);
+      }
+
+
+
+  }
 } 

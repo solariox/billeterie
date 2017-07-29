@@ -32,7 +32,7 @@ class Commande
      /**
      * @var \DateTime
      *
-     * @ORM\Column(name="ownerBirthday", type="date")
+     * @ORM\Column(name="orderDate", type="date")
      * @Assert\DateTime()
      */
     private $orderDate;
@@ -154,7 +154,7 @@ class Commande
     public function addTicket(\OC\TicketingBundle\Entity\Ticket $ticket)
     {
         $this->tickets[] = $ticket;
-
+        $ticket->setCommandeId($this);
         return $this;
     }
 

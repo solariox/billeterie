@@ -44,14 +44,12 @@ class IndexController extends Controller
     {
 
 
-        $nouvelle_commande = $request->getSession()->get("commande");
+        $commande = $request->getSession()->get("commande");
 
         // On récupère le service de calcul de prix
         $PriceCalculator = $this->container->get('oc_ticketing.pricecalculator');
-        $PriceCalculator->calculate($nouvelle_commande);
-        
-
-        var_dump($nouvelle_commande);
+        $PriceCalculator->calculate($commande);
+        $PriceCalculator->SetToDate($commande);
         if($request->isMethod('POST')){
             $form->handleRequest($request);
             // On vérifie que les valeurs entrées sont correctes
@@ -62,7 +60,7 @@ class IndexController extends Controller
         }
 
             return $this->render('OCTicketingBundle:Tunnel:check.html.twig', array(
-        'commande' => $nouvelle_commande));
+        'commande' => $commande));
     }
 
     public function paymentAction(Request $request)
@@ -76,6 +74,10 @@ class IndexController extends Controller
     public function ValidAction(Request $request)
     {
         $commande = $request->getSession()->get("commande");
+        foreach($commande->getTickets() as $ticket){
+            $commande->addTicket($ticket);
+        }
+        
         // Set your API key
         \Stripe\Stripe::setApiKey("sk_test_r8dPHfTJDMI5duQunjSxvqng");
         try {
@@ -88,6 +90,14 @@ class IndexController extends Controller
         } catch (\Stripe\CardError $e) {
            var_dump("error");
         }
+         // On récupère l'EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        // Étape 1 : On « persiste » l'entité
+        $em->persist($commande);
+
+        // Étape 2 : On « flush » tout ce qui a été persisté avant
+        $em->flush();
          return $this->render('OCTicketingBundle:Tunnel:valid.html.twig');
     }
 }
