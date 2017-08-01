@@ -50,6 +50,22 @@ class IndexController extends Controller
         $PriceCalculator = $this->container->get('oc_ticketing.pricecalculator');
         $PriceCalculator->calculate($commande);
         $PriceCalculator->SetToDate($commande);
+
+        $repository = $this
+        ->getDoctrine()
+        ->getManager()
+        ->getRepository('OCTicketingBundle:Commande');
+        
+        $result = $repository->findByOrderDate($commande->getOrderDate());
+        
+        // Verification d'un trop de commande 
+        if (count($result) >2){
+            return $this->redirectToRoute('oc_ticketing_error');
+        }
+
+
+
+
         if($request->isMethod('POST')){
             $form->handleRequest($request);
             // On vérifie que les valeurs entrées sont correctes
@@ -77,7 +93,7 @@ class IndexController extends Controller
         foreach($commande->getTickets() as $ticket){
             $commande->addTicket($ticket);
         }
-        
+
         // Set your API key
         \Stripe\Stripe::setApiKey("sk_test_r8dPHfTJDMI5duQunjSxvqng");
         try {
@@ -100,4 +116,11 @@ class IndexController extends Controller
         $em->flush();
          return $this->render('OCTicketingBundle:Tunnel:valid.html.twig');
     }
+
+
+    
+    public function errorAction(Request $request){
+            return $this->render('OCTicketingBundle:Tunnel:error.html.twig');
+    }
+
 }

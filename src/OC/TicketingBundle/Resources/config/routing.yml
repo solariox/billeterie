@@ -14,3 +14,8 @@ oc_ticketing_payment:
 oc_ticketing_valid:
     path:     /valid
     defaults: { _controller: OCTicketingBundle:Index:valid }
+
+oc_ticketing_error:
+    path:     /error
+    defaults: { _controller: OCTicketingBundle:Index:error }
+    
