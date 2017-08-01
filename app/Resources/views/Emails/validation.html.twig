@@ -5,12 +5,11 @@
 
 {% block body %}
 
+<p>Voici tes tickets, c'est gentil</p>
 
-<p>Merci pour l'argent. va voir tes mails, t'as recu tes tickets</p>
  {% for ticket in commande.tickets %}
         <strong> Ticket de {{ticket.owner}} </strong>
         <p> pour le {{ticket.bookdate|date('Y-m-d')}}</p>
     {% endfor %}
-<a href="{{ path('oc_ticketing_home') }}">retour à l'accueil</a></li>
 
 {% endblock %}

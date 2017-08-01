@@ -13,6 +13,7 @@ use OC\TicketingBundle\Form\CommandeType;
 use OC\TicketingBundle\Form\TicketType;
 // Import Non-Namespaced Stripe Library
 use Stripe;
+use \Swift_Message;
 
 class IndexController extends Controller
 {
@@ -59,7 +60,7 @@ class IndexController extends Controller
         $result = $repository->findByOrderDate($commande->getOrderDate());
         
         // Verification d'un trop de commande 
-        if (count($result) >2){
+        if (count($result) >1000){
             return $this->redirectToRoute('oc_ticketing_error');
         }
 
@@ -114,7 +115,28 @@ class IndexController extends Controller
 
         // Étape 2 : On « flush » tout ce qui a été persisté avant
         $em->flush();
-         return $this->render('OCTicketingBundle:Tunnel:valid.html.twig');
+
+
+
+        $message = (new \Swift_Message('Hello Email'))
+        ->setFrom('send@example.com')
+        ->setTo($commande->getEmail())
+        ->setBody(
+            $this->renderView(
+                // app/Resources/views/Emails/validation.html.twig
+                'Emails\validation.html.twig',
+                array('commande' => $commande)
+            ),
+            'text/html'
+        )
+    ;
+
+    $this->get('mailer')->send($message);
+
+
+
+         return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
+        'commande' => $commande));
     }
 
 
