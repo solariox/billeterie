@@ -15,6 +15,7 @@ use OC\TicketingBundle\Form\TicketType;
 use Stripe;
 use \Swift_Message;
 
+
 class IndexController extends Controller
 {
     public function indexAction ( Request $request)
@@ -43,8 +44,6 @@ class IndexController extends Controller
 
     public function checkAction(Request $request)
     {
-
-
         $commande = $request->getSession()->get("commande");
 
         // On récupère le service de calcul de prix
@@ -55,46 +54,32 @@ class IndexController extends Controller
         $repository = $this
         ->getDoctrine()
         ->getManager()
-        ->getRepository('OCTicketingBundle:Commande');
+        ->getRepository('OCTicketingBundle:Ticket');
         
-        $result = $repository->findByOrderDate($commande->getOrderDate());
-        
-        // Verification d'un trop de commande 
+        $tickets = $commande->getTickets();
+
+        foreach ($tickets as $ticket){
+            
+        $result = $repository->findByBookdate($ticket->getBookdate());
+         // Verification d'un trop de commande 
         if (count($result) >1000){
             return $this->redirectToRoute('oc_ticketing_error');
-        }
-
-
-
-
-        if($request->isMethod('POST')){
-            $form->handleRequest($request);
-            // On vérifie que les valeurs entrées sont correctes
-            if ($form->isValid()) {
-                $request->getSession()->set("commande", $commande);
-                return $this->redirectToRoute('oc_ticketing_payment');  
-            }    
+            }
         }
 
             return $this->render('OCTicketingBundle:Tunnel:check.html.twig', array(
         'commande' => $commande));
     }
 
-    public function paymentAction(Request $request)
-    {
-        $commande = $request->getSession()->get("commande");
-
-            return $this->render('OCTicketingBundle:Tunnel:payment.html.twig', array(
-        'commande' => $commande));
-    }
 
     public function ValidAction(Request $request)
     {
         $commande = $request->getSession()->get("commande");
+        var_dump($commande->getTickets());
+        
         foreach($commande->getTickets() as $ticket){
-            $commande->addTicket($ticket);
+            $ticket->setCommandeId($commande);
         }
-
         // Set your API key
         \Stripe\Stripe::setApiKey("sk_test_r8dPHfTJDMI5duQunjSxvqng");
         try {
@@ -116,10 +101,9 @@ class IndexController extends Controller
         // Étape 2 : On « flush » tout ce qui a été persisté avant
         $em->flush();
 
-
-
-        $message = (new \Swift_Message('Hello Email'))
-        ->setFrom('send@example.com')
+  
+        $message = (new \Swift_Message('Transaction validée'))
+        ->setFrom('contact@louvre.com')
         ->setTo($commande->getEmail())
         ->setBody(
             $this->renderView(
@@ -132,7 +116,6 @@ class IndexController extends Controller
     ;
 
     $this->get('mailer')->send($message);
-
 
 
          return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(

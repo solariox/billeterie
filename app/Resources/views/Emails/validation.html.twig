@@ -1,15 +1,8 @@
-{% extends "OCTicketingBundle::layout.html.twig" %}
-{% block title %}
-   Transaction validée - {{ parent()}}
-{% endblock %}
-
-{% block body %}
+<h1>Transaction validée</h1>
 
 <p>Voici tes tickets, c'est gentil</p>
 
  {% for ticket in commande.tickets %}
-        <strong> Ticket de {{ticket.owner}} </strong>
+        <strong> Ticket de {{ticket.owner}} </strong> - commande numéro - {{ticket.id}}
         <p> pour le {{ticket.bookdate|date('Y-m-d')}}</p>
     {% endfor %}
-
-{% endblock %}
