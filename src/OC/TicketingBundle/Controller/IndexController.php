@@ -4,6 +4,7 @@ namespace OC\TicketingBundle\Controller;
 
 use OC\TicketingBundle\Entity\Ticket;
 use OC\TicketingBundle\Entity\Commande;
+use  \DateTime;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,23 @@ class IndexController extends Controller
             $form->handleRequest($request);
             // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) {
+                //gestion des informations eronnées 
+                $today = new DateTime();
+                 foreach ($commande->getTickets() as $ticket){
+                    $bookdate = DateTime::createFromFormat("d-m-Y", $ticket->getBookdate());
+                    $birthday = DateTime::createFromFormat("d-m-Y", $ticket->getOwnerBirthday());
+                    
+                    if ($today > $bookdate){
+                        $this->get('session')->getFlashBag()->set('error', 'Vous ne pouvez reserver dans le passé');
+                        return $this->redirectToRoute('oc_ticketing_error');
+                    }
+
+                    if ($today < $birthday){
+                        $this->get('session')->getFlashBag()->set('error', 'Vous ne pouvez être né dans le futur');
+                        return $this->redirectToRoute('oc_ticketing_error');
+                    }
+                 }
+
                 $commande->setOrderDate(new \DateTime());
                 $request->getSession()->set("commande", $commande);
                 return $this->redirectToRoute('oc_ticketing_check');
@@ -63,6 +81,7 @@ class IndexController extends Controller
         $result = $repository->findByBookdate($ticket->getBookdate());
          // Verification d'un trop de commande 
         if (count($result) >1000){
+            $this->get('session')->getFlashBag()->set('error', 'Vous ne pouvez pas reserver, trop de tickets ont été vendu ce jour. ');
             return $this->redirectToRoute('oc_ticketing_error');
             }
         }
@@ -117,7 +136,7 @@ class IndexController extends Controller
 
     $this->get('mailer')->send($message);
 
-
+        
          return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
         'commande' => $commande));
     }

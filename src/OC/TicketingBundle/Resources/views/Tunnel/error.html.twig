@@ -1,1 +1,6 @@
-<p>déjà trop de tickets ce jour</p>
+
+{% for flashMessage in app.session.flashbag.get('error') %}
+
+    {{ flashMessage }}
+
+{% endfor %}

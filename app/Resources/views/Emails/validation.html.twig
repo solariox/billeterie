@@ -1,8 +1,9 @@
 <h1>Transaction validée</h1>
 
-<p>Voici tes tickets, c'est gentil</p>
-
+<p>Vous avez reservé le {{commande.orderDate}} au musée du Louvre. </p>
+ 
+ Voici la liste de vos billets : 
  {% for ticket in commande.tickets %}
-        <strong> Ticket de {{ticket.owner}} </strong> - commande numéro - {{ticket.id}}
+        <strong> Billet de {{ticket.owner}} </strong> - portant le numéro - {{ticket.id}}
         <p> pour le {{ticket.bookdate|date('Y-m-d')}}</p>
     {% endfor %}
