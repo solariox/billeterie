@@ -37,6 +37,13 @@ class Ticket
      */
     private $owner;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reservationNumber", type="string", length=255, nullable=true)
+     */
+    private $reservationNumber;
+
      /**
      * @var \DateTime
      *
@@ -254,5 +261,29 @@ class Ticket
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set reservationNumber
+     *
+     * @param string $reservationNumber
+     *
+     * @return Ticket
+     */
+    public function setReservationNumber($reservationNumber)
+    {
+        $this->reservationNumber = $reservationNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get reservationNumber
+     *
+     * @return string
+     */
+    public function getReservationNumber()
+    {
+        return $this->reservationNumber;
     }
 }

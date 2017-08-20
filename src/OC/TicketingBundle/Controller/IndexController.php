@@ -15,7 +15,7 @@ use OC\TicketingBundle\Form\TicketType;
 // Import Non-Namespaced Stripe Library
 use Stripe;
 use \Swift_Message;
-
+use \Swift_Attachment;
 
 class IndexController extends Controller
 {
@@ -94,7 +94,6 @@ class IndexController extends Controller
     public function ValidAction(Request $request)
     {
         $commande = $request->getSession()->get("commande");
-        var_dump($commande->getTickets());
         
         foreach($commande->getTickets() as $ticket){
             $ticket->setCommandeId($commande);
@@ -120,27 +119,16 @@ class IndexController extends Controller
         // Étape 2 : On « flush » tout ce qui a été persisté avant
         $em->flush();
 
-  
-        $message = (new \Swift_Message('Transaction validée'))
-        ->setFrom('contact@louvre.com')
-        ->setTo($commande->getEmail())
-        ->setBody(
-            $this->renderView(
-                // app/Resources/views/Emails/validation.html.twig
-                'Emails\validation.html.twig',
-                array('commande' => $commande)
-            ),
-            'text/html'
-        )
-    ;
+        foreach($commande->getTickets() as $ticket){
+            $ticket->setReservationNumber(sha1('cdg18jg65324gjfhn' . $ticket->getId() )); //génération du code avec sel
+        }
 
-    $this->get('mailer')->send($message);
-
+        $Mailer = $this->container->get('oc_ticketing.mailer');
+        $Mailer->sendMail($commande);
         
          return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
         'commande' => $commande));
     }
-
 
     
     public function errorAction(Request $request){

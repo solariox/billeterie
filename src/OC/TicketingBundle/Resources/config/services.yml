@@ -1,3 +1,5 @@
 services:
     oc_ticketing.pricecalculator:
         class: OC\TicketingBundle\PriceCalculator\OCPriceCalculator
+    oc_ticketing.mailer:
+        class: OC\TicketingBundle\Mailer\OCMailer
