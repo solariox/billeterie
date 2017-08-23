@@ -1,9 +1,11 @@
 <?php
 
+namespace OC\TicketingBundle\Mailer;
+
 use \Swift_Message;
 use \Swift_Attachment;
 
-class OCPMailer
+class OCMailer
 {
     public function sendMail($commande)
     {
@@ -31,11 +33,13 @@ class OCPMailer
 
             $pdf->AddPage();
             $pdf->SetFont('Arial','B',16);
-            $pdf->Cell(40,10,'Billet de ');
+            $pdf->Cell(40,10,'Billet de '. $ticket->getOwner());
             $message->attach($attachment);
+        }
         
 
 
     $this->get('mailer')->send($message);
 
+    }
 }
