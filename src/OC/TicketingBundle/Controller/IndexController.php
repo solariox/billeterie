@@ -124,7 +124,7 @@ class IndexController extends Controller
         }
 
         $Mailer = $this->container->get('oc_ticketing.mailer');
-        $Mailer->sendMail($commande);
+        $Mailer->sendMail($commande, $this);
         
          return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
         'commande' => $commande));

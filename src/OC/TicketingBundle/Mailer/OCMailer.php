@@ -7,13 +7,22 @@ use \Swift_Attachment;
 
 class OCMailer
 {
+
+    public function __construct($templating, $mailer)
+    { 
+        $this->templating = $templating;
+        $this->mailer = $mailer;
+    }
+
+
     public function sendMail($commande)
     {
         $message = (new \Swift_Message('Transaction validée'))
+
         ->setFrom('contact@louvre.com')
         ->setTo($commande->getEmail())
         ->setBody(
-            $this->renderView(
+            $this->templating->render(
                 // app/Resources/views/Emails/validation.html.twig
                 'Emails\validation.html.twig',
                 array('commande' => $commande)
@@ -29,17 +38,16 @@ class OCMailer
 
         foreach($commande->getTickets() as $ticket){
             $pdf = new \FPDF();
-            $attachment = new Swift_Attachment($pdf->Output('S'), 'ticket.pdf', 'application/pdf');
+            
 
             $pdf->AddPage();
             $pdf->SetFont('Arial','B',16);
-            $pdf->Cell(40,10,'Billet de '. $ticket->getOwner());
+            $pdf->Cell(40,10,'Billet de '. $ticket->getOwner() );
+            $attachment = new Swift_Attachment($pdf->Output('S'), 'ticket.pdf', 'application/pdf');
             $message->attach($attachment);
         }
         
-
-
-    $this->get('mailer')->send($message);
+    $this->mailer->send($message);
 
     }
 }

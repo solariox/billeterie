@@ -3,3 +3,4 @@ services:
         class: OC\TicketingBundle\PriceCalculator\OCPriceCalculator
     oc_ticketing.mailer:
         class: OC\TicketingBundle\Mailer\OCMailer
+        arguments: ['@templating', '@mailer']
