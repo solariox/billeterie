@@ -24,11 +24,14 @@ class TicketType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('owner', TextType::class)
+        ->add('owner', TextType::class,array(
+            'label'    => 'Propriétaire du billet'))
         ->add('ownerBirthday', TextType::class, array(
+            'label'=> 'Date d\'anniversaire',
             'attr' => array('class' => 'datepickerBirthday', 
                             'type' => 'date')))
         ->add('bookdate', TextType::class, array(
+            'label'=> 'Date de réservation',
             'attr' => array('class' => 'datepickerBookdate', 
                             'type' => 'date')))
                             
@@ -39,7 +42,10 @@ class TicketType extends AbstractType
             'required' => false,))
         ->add('halfday', CheckboxType::class, array(
             'label'    => 'Demi-journée ',
-            'required' => false,));
+            'required' => false,))
+        ->add('country', TextType::class, array(
+            'label'    => 'Pays',
+            'required' => true,));
     }
     
     /**

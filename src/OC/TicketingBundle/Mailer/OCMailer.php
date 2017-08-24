@@ -38,8 +38,6 @@ class OCMailer
 
         foreach($commande->getTickets() as $ticket){
             $pdf = new \FPDF();
-            
-
             $pdf->AddPage();
             $pdf->SetFont('Arial','B',16);
             $pdf->Cell(40,10,'Billet de '. $ticket->getOwner() );

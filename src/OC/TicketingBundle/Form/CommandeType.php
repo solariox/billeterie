@@ -34,7 +34,9 @@ class CommandeType extends AbstractType
         'allow_delete' => true
         ))
         ->add('email',EmailType::class)
-        ->add('save', SubmitType::class);
+        ->add('save', SubmitType::class, array(
+             'attr' => array('class' => 'btn btn-success'),
+            'label'=>'Passer la commande'));
     }
     
     /**

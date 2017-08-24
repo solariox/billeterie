@@ -45,6 +45,13 @@ class Ticket
     private $reservationNumber;
 
      /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     */
+    private $country;
+
+     /**
      * @var \DateTime
      *
      * @ORM\Column(name="ownerBirthday", type="date")
@@ -285,5 +292,29 @@ class Ticket
     public function getReservationNumber()
     {
         return $this->reservationNumber;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     *
+     * @return Ticket
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 }
