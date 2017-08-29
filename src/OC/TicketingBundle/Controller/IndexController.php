@@ -120,7 +120,7 @@ class IndexController extends Controller
         $em->flush();
 
         foreach($commande->getTickets() as $ticket){
-            $ticket->setReservationNumber(sha1('cdg18jg65324gjfhn' . $ticket->getId() )); //génération du code avec sel
+            $ticket->setReservationNumber(substr( sha1('cdg18jg65324gjfhn'.$ticket->getId()),0,16)); //génération et troncage du code avec sel,
         }
 
         $Mailer = $this->container->get('oc_ticketing.mailer');
