@@ -5,8 +5,8 @@
 
 {% block body %}
 
-
-<p>Merci pour l'argent. va voir tes mails, t'as recu tes tickets</p>
+<h1>Transaction validée</h1>
+<p>Vous avez reçu vos billets par mail pour les personnes suivantes : </p>
  {% for ticket in commande.tickets %}
         <strong> Ticket de {{ticket.owner}} </strong>
         <p> pour le {{ticket.bookdate|date('Y-m-d')}}</p>
