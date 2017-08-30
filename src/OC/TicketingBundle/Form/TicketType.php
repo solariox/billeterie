@@ -23,6 +23,14 @@ class TicketType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $today = new \DateTime();
+        $halfday_attr = ($today->format('H')>14)
+        ? ['checked'=> 'checked','disabled'=>'disabled','data_itsHalfday'=>'true']
+        : [];
+        $halfday_attr['class']='halfdayCheckbox';
+ 
+            
+
         $builder
         ->add('owner', TextType::class,array(
             'label'    => 'Propriétaire du billet'))
@@ -33,7 +41,10 @@ class TicketType extends AbstractType
         ->add('bookdate', TextType::class, array(
             'label'=> 'Date de réservation',
             'attr' => array('class' => 'datepickerBookdate', 
-                            'type' => 'date')))
+                            'type' => 'date',
+                            'value'=>$today->format('d-m-Y'),
+                            'data_today'=>$today->format('d-m-Y')
+                            )))
                             
         ->add('reduced', CheckboxType::class, array(
             'attr' => array('class' => 'reduced',
@@ -42,7 +53,9 @@ class TicketType extends AbstractType
             'required' => false,))
         ->add('halfday', CheckboxType::class, array(
             'label'    => 'Demi-journée ',
-            'required' => false,))
+            'required' => false,
+            'attr'=>$halfday_attr)
+            )
         ->add('country', TextType::class, array(
             'label'    => 'Pays',
             'required' => true,));

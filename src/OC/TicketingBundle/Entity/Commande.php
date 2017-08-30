@@ -52,6 +52,13 @@ class Commande
      */
     private $price;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="paiementOK", type="string", nullable=TRUE)
+     */
+    private $paiementOK;
+
 
     /**
      * Get id
@@ -190,5 +197,29 @@ class Commande
     public function getOrderDate()
     {
         return $this->orderDate;
+    }
+
+    /**
+     * Set paiementOK
+     *
+     * @param string $paiementOK
+     *
+     * @return Commande
+     */
+    public function setPaiementOK($paiementOK)
+    {
+        $this->paiementOK = $paiementOK;
+
+        return $this;
+    }
+
+    /**
+     * Get paiementOK
+     *
+     * @return string
+     */
+    public function getPaiementOK()
+    {
+        return $this->paiementOK;
     }
 }

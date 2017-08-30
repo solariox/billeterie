@@ -13,21 +13,6 @@
 
 
 <div class="well">
-{#
-  {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
-
-    <div class="form-group">
-            {{ form_label(form.tickets, 'Votre réponse : ' , { 'label_attr':  {
-                'class': 'col-sm-4 control-label'
-            }}) }}
-            <div class="col-sm-6">
-                {{ form_errors(answerForm.content) }}
-                {{ form_widget(answerForm.content, { 'attr':  {
-                    'class': 'form-control',
-                    'rows': '4'                
-                }}) }}
-
-#}
 
   {{ form(form) }}
 
@@ -39,7 +24,6 @@
 
 <script type="text/javascript">
   var numberOfTick = 0; 
-
   // Pour changer le contenu du message de tarif réduit 
       function handleChange(cb) {
   if(cb.checked == true){
@@ -77,9 +61,6 @@
       $container.children('div').each(function() {
         addDeleteLink($(this));
       });
-
-
-
 
 
     }
@@ -165,6 +146,16 @@
         yearRange: new Date().getFullYear()+':2100' ,
         minDate: '0',
         beforeShowDay: DisableDay,
+        onSelect: function(date,instance){
+          if (date == $(this).attr('data_today') && $('.halfdayCheckbox').attr('data_itsHalfday')){
+            $('.halfdayCheckbox').prop('checked',true).prop('disabled',true);
+          
+          }
+          else{
+            $('.halfdayCheckbox').prop('checked',false).prop('disabled',false);
+          }
+        }
+
 
       });
       

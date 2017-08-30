@@ -47,18 +47,18 @@ class OCMailer
             // Décalage à droite
             $pdf->Cell(80);
             // Titre
-            $pdf->Cell(60,10,'Musée du Louvre',0,0,'c');
+            $pdf->Cell(60,10,utf8_decode ('Musée du Louvre'),0,0,'c');
             // Saut de ligne
             $pdf->Ln(20);
             // Nom du possesseur
-            $pdf->Cell(60,10,'Billet de '. $ticket->getOwner().'pour le '. $ticket->getBookdate()->format('d-m-Y') ,0,0,'c');
+            $pdf->Cell(60,10,utf8_decode ('Billet de '. $ticket->getOwner().' pour le '. $ticket->getBookdate()->format('d-m-Y')) ,0,0,'c');
             // Saut de ligne
             $pdf->Ln(20);
             $pdf->Code39(10,40,$ticket->getReservationNumber(),1,10); //Code39(float xpos, float ypos, string code [, float baseline [, float height]])
             // Saut de ligne
             $pdf->Ln(10);
              // Tarif
-            $pdf->Cell(60,10,'Tarif : '. $ticket->getPrice().' euros',0,0,'c');
+            $pdf->Cell(60,10,utf8_decode ('Tarif : '. $ticket->getPrice().'euros'),0,0,'c');
 
             $attachment = new Swift_Attachment($pdf->Output('S'), 'ticket.pdf', 'application/pdf');
             $message->attach($attachment);

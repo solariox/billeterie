@@ -19,6 +19,17 @@ use \Swift_Attachment;
 
 class IndexController extends Controller
 {
+
+    public function sendTickets($commande){
+
+        $Mailer = $this->container->get('oc_ticketing.mailer');
+        $Mailer->sendMail($commande, $this);
+        
+         return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
+        'commande' => $commande));
+    }
+
+
     public function indexAction ( Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -79,11 +90,17 @@ class IndexController extends Controller
         foreach ($tickets as $ticket){
             
         $result = $repository->findByBookdate($ticket->getBookdate());
-         // Verification d'un trop de commande 
+
+
         if (count($result) >1000){
             $this->get('session')->getFlashBag()->set('error', 'Vous ne pouvez pas reserver, trop de tickets ont été vendu ce jour. ');
-            return $this->redirectToRoute('oc_ticketing_error');
+            return $this->redirectToRoute('oc_ticketing_check');
             }
+
+        // Verification d'un trop de commande 
+         if ($commande->getPrice()==0){
+            return $this->sendTickets($commande);
+         }
         }
 
             return $this->render('OCTicketingBundle:Tunnel:check.html.twig', array(
@@ -94,45 +111,50 @@ class IndexController extends Controller
     public function ValidAction(Request $request)
     {
         $commande = $request->getSession()->get("commande");
-        
-        foreach($commande->getTickets() as $ticket){
-            $ticket->setCommandeId($commande);
+        if(!is_null($commande->getPaiementOK() ) ){ // Si la commande a déjà été validé 
+             return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
+        'commande' => $commande));
         }
         // Set your API key
         \Stripe\Stripe::setApiKey("sk_test_r8dPHfTJDMI5duQunjSxvqng");
         try {
-            \Stripe\Charge::create([
+            $result = \Stripe\Charge::create([
                 'amount' => $commande->getPrice() * 100,
                 'currency' => 'eur',
                 'card' => $_POST['stripeToken'],
                 'description' => 'blabla'
             ]);
+
+            $commande->setPaiementOK($result->id);
+
+           foreach($commande->getTickets() as $ticket){
+                $ticket->setCommandeId($commande);
+            }
+
+            foreach($commande->getTickets() as $ticket){
+                $ticket->setReservationNumber(substr( sha1('cdg18jg65324gjfhn'.$ticket->getId()),0,16)); //génération et troncage du code avec sel,
+            }
+            // On récupère l'EntityManager
+            $em = $this->getDoctrine()->getManager();
+
+            // Étape 1 : On « persiste » l'entité
+            $em->persist($commande);
+
+            // Étape 2 : On « flush » tout ce qui a été persisté avant
+            $em->flush();
+
         } catch (\Stripe\CardError $e) {
            var_dump("error");
         }
-         // On récupère l'EntityManager
-        $em = $this->getDoctrine()->getManager();
 
-        // Étape 1 : On « persiste » l'entité
-        $em->persist($commande);
-
-        // Étape 2 : On « flush » tout ce qui a été persisté avant
-        $em->flush();
-
-        foreach($commande->getTickets() as $ticket){
-            $ticket->setReservationNumber(substr( sha1('cdg18jg65324gjfhn'.$ticket->getId()),0,16)); //génération et troncage du code avec sel,
-        }
-
-        $Mailer = $this->container->get('oc_ticketing.mailer');
-        $Mailer->sendMail($commande, $this);
-        
-         return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
-        'commande' => $commande));
+        return $this->sendTickets($commande);
     }
 
     
     public function errorAction(Request $request){
             return $this->render('OCTicketingBundle:Tunnel:error.html.twig');
     }
+
+
 
 }

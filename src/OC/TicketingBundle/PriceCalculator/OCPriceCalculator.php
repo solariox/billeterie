@@ -15,8 +15,12 @@ class OCPriceCalculator
     $totalPrice=0;
     $today = new \DateTime();
     foreach($commande->getTickets() as $ticket){
+      
       //on transforme la date en objet pour pouvoir la manipuler 
-      $birthday = DateTime::createFromFormat("d-m-Y", $ticket->getOwnerBirthday());
+
+      $birthday = ( is_string($ticket->getOwnerBirthday()) ) 
+        ? DateTime::createFromFormat("d-m-Y", $ticket->getOwnerBirthday() ) 
+        : $ticket->getOwnerBirthday();
       $dateInterval = $today->diff($birthday);
 
       if ($dateInterval->y < 4) {
@@ -46,10 +50,14 @@ class OCPriceCalculator
   public function SetToDate(Commande $commande)
   {
     foreach($commande->getTickets() as $ticket){
-      $birthday = DateTime::createFromFormat("d-m-Y", $ticket->getOwnerBirthday());
+      $birthday = ( is_string($ticket->getOwnerBirthday()) ) 
+        ? DateTime::createFromFormat("d-m-Y", $ticket->getOwnerBirthday() ) 
+        : $ticket->getOwnerBirthday();
       $ticket->setOwnerBirthday($birthday);
     
-      $bookdate = DateTime::createFromFormat("d-m-Y", $ticket->getBookdate());
+      $bookdate = ( is_string($ticket->getBookdate()) ) 
+        ? DateTime::createFromFormat("d-m-Y", $ticket->getBookdate() ) 
+        : $ticket->getBookdate();
       $ticket->setBookdate($bookdate);
       }
 
