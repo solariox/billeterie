@@ -19,6 +19,8 @@
 <form id ="formulaire" action="{{ path('oc_ticketing_valid') }}" method="POST">
   <script
     src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+    data-locale="auto"
+    data-currency="EUR"
     data-key="pk_test_feEqQTsoxOWDyQv1bQo688I3"
     data-amount="{{commande.price * 100 }}"
     data-name="Commande "

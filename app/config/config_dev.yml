@@ -38,6 +38,6 @@ monolog:
         #    level: info
 
 swiftmailer:
-    transport: gmail
+    transport: smtp
     username:  '%mailer_user%'
     password:  '%mailer_password%'

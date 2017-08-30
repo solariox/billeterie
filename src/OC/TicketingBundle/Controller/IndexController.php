@@ -99,6 +99,15 @@ class IndexController extends Controller
 
         // Verification d'un trop de commande 
          if ($commande->getPrice()==0){
+             
+            foreach($commande->getTickets() as $ticket){
+                $ticket->setCommandeId($commande);
+            }
+            
+            foreach($commande->getTickets() as $ticket){
+                $ticket->setReservationNumber(substr( sha1('cdg18jg65324gjfhn'.$ticket->getId()),0,16)); //génération et troncage du code avec sel,
+            }
+
             return $this->sendTickets($commande);
          }
         }

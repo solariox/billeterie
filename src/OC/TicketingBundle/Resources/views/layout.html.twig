@@ -12,15 +12,14 @@
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     {% endblock %}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" >
   </head>
 
   <body>
   <div class="container">
     <div id="header" class="jumbotron">
       <h1>Bienvenue sur le site du Louvre</h1>
-      <p>
-        Ce projet est propulsé par Symfony, et construit grâce au MOOC OpenClassrooms et SensioLabs. il est réalisé par Julien Marie dans le cadre du projet 4 
-      </p>
+      {#<img src="{{ asset('image/louvre.jpg') }}" alt="logo louvre">#}
     </div>
 
     <div class="row">
@@ -35,10 +34,14 @@
       </div>
     </div>
 
-    <hr>
+    <hr> 
 
     <footer>
-      <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
+      <p>
+        Ce projet est élaboré par Symfony. 
+        <br/>Il est réalisé par Julien Marie dans le cadre du projet 4 de la formation Open Classroom. 
+      </p>
+      
     </footer>
   </div>
 
