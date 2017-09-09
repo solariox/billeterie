@@ -5,12 +5,12 @@
 
 {% block body %}
 
-<h1>Transaction validée</h1>
-<p>Vous avez reçu vos billets par mail pour les personnes suivantes : </p>
+<h1>{{ 'Transaction validée'|trans }}</h1>
+<p>{{ 'Vous avez reçu vos billets par mail pour les personnes suivantes :'|trans }} </p>
  {% for ticket in commande.tickets %}
-        <strong> Ticket de {{ticket.owner}} </strong>
-        <p> pour le {{ticket.bookdate|date('Y-m-d')}}</p>
+        <strong> {{ 'Ticket de '|trans }} {{ticket.owner}} </strong>
+        <p> {{ 'Pour le :  '|trans }}  {{ticket.bookdate|date('Y-m-d')}}</p>
     {% endfor %}
-<a href="{{ path('oc_ticketing_home') }}">retour à l'accueil</a></li>
+<a href="{{ path('oc_ticketing_home') }}"> {{ 'retour à l\'accueil '|trans }}</a></li>
 
 {% endblock %}

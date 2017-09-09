@@ -1,6 +1,6 @@
 <?php
 
-namespace OC\TicketingBundle\Mailer;
+namespace OC\TicketingBundle\Services\Mailer;
 
 use \Swift_Message;
 use \Swift_Attachment;

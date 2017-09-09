@@ -1,11 +1,12 @@
 {% extends "OCTicketingBundle::layout.html.twig" %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% block title %}
-  Page d'accueil - {{ parent() }}
+  {{ "Page d'accueil - "|trans }} {{ parent() }}
 {% endblock %}
 
 {% block body %}
-<h3>Formulaire de billeterie</h3>
+
+<h3>{{ 'Formulaire de billeterie'|trans }}</h3>
 
 {# On charge la bibliothèque jQuery. #}
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -16,8 +17,10 @@
 
   {{ form(form) }}
 
-<div class="alert alert-warning reduced_message" style="display:none" >
-  <strong>Attention ! </strong> Une piece justificative vous sera demandé pour justifier le tarif réduit. 
+  <div class="alert alert-warning reduced_message" style="display:none" >
+    <strong> {{ ' Attention ! '|trans }}</strong>{{ 'Une piece justificative vous sera demandé pour justifier le tarif réduit. '|trans }} 
+  </div>
+</div>
 
 
 
@@ -25,15 +28,15 @@
 <script type="text/javascript">
   var numberOfTick = 0; 
   // Pour changer le contenu du message de tarif réduit 
-      function handleChange(cb) {
-  if(cb.checked == true){
-    numberOfTick +=1; 
+  function handleChange(cb) {
+    if(cb.checked == true){
+      numberOfTick +=1; 
 
-  }else{
-     numberOfTick -=1;
+    }else{
+      numberOfTick -=1;
+    }
+    $(".reduced_message").css('display',numberOfTick===0?'none':'inherit');
   }
-  $(".reduced_message").css('display',numberOfTick===0?'none':'inherit');
-}
 
 
   $(document).ready(function() {

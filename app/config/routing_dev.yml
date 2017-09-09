@@ -12,3 +12,7 @@ _errors:
 
 _main:
     resource: routing.yml
+oc_platform_translation:
+    path:     /traduction/{name}
+    defaults:
+        _controller: OCTicketingBundle:Index:translation

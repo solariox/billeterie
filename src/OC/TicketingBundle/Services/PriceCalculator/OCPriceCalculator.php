@@ -1,7 +1,7 @@
 <?php 
 
 
-namespace OC\TicketingBundle\PriceCalculator;
+namespace OC\TicketingBundle\Services\PriceCalculator;
 
 use OC\TicketingBundle\Entity\Ticket;
 use OC\TicketingBundle\Entity\Commande;

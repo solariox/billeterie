@@ -33,7 +33,7 @@ class TicketType extends AbstractType
 
         $builder
         ->add('owner', TextType::class,array(
-            'label'    => 'Propriétaire du billet'))
+            'label_format' => '%name%'))
         ->add('ownerBirthday', TextType::class, array(
             'label'=> 'Date d\'anniversaire',
             'attr' => array('class' => 'datepickerBirthday', 

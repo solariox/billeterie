@@ -6,7 +6,7 @@
 {% block body %}
 
 <h1>{{ 'Whoops, il y a eu un problème'|trans }}</h1>
-<img src="../404.png">
+
 {% for flashMessage in app.session.flashbag.get('error') %}
 
     {{ flashMessage }}

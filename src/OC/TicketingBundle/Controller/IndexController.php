@@ -20,16 +20,6 @@ use \Swift_Attachment;
 class IndexController extends Controller
 {
 
-    public function sendTickets($commande){
-
-        $Mailer = $this->container->get('oc_ticketing.mailer');
-        $Mailer->sendMail($commande, $this);
-        
-         return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
-        'commande' => $commande));
-    }
-
-
     public function indexAction ( Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -88,28 +78,23 @@ class IndexController extends Controller
         $tickets = $commande->getTickets();
 
         foreach ($tickets as $ticket){
-            
-        $result = $repository->findByBookdate($ticket->getBookdate());
-
-
-        if (count($result) >1000){
-            $this->get('session')->getFlashBag()->set('error', 'Vous ne pouvez pas reserver, trop de tickets ont été vendu ce jour. ');
-            return $this->redirectToRoute('oc_ticketing_check');
+            $result = $repository->findByBookdate($ticket->getBookdate());
+            // Verification d'un trop de commande 
+            if (count($result) >1000){
+                $this->get('session')->getFlashBag()->set('error', 'Vous ne pouvez pas reserver, trop de tickets ont été vendu ce jour. ');
+                return $this->redirectToRoute('oc_ticketing_check');
             }
 
-        // Verification d'un trop de commande 
+        //Si il n'y a pas de paiment à faire
          if ($commande->getPrice()==0){
-             
             foreach($commande->getTickets() as $ticket){
                 $ticket->setCommandeId($commande);
             }
-            
             foreach($commande->getTickets() as $ticket){
                 $ticket->setReservationNumber(substr( sha1('cdg18jg65324gjfhn'.$ticket->getId()),0,16)); //génération et troncage du code avec sel,
             }
-
             return $this->sendTickets($commande);
-         }
+            }
         }
 
             return $this->render('OCTicketingBundle:Tunnel:check.html.twig', array(
@@ -156,10 +141,14 @@ class IndexController extends Controller
            var_dump("error");
         }
 
-        return $this->sendTickets($commande);
+        
+        $Mailer = $this->container->get('oc_ticketing.mailer');
+        $Mailer->sendMail($commande, $this);
+        
+         return $this->render('OCTicketingBundle:Tunnel:valid.html.twig', array(
+        'commande' => $commande));
     }
 
-    
     public function errorAction(Request $request){
             return $this->render('OCTicketingBundle:Tunnel:error.html.twig');
     }
