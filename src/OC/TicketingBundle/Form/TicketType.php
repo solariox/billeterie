@@ -35,11 +35,11 @@ class TicketType extends AbstractType
         ->add('owner', TextType::class,array(
             'label_format' => '%name%'))
         ->add('ownerBirthday', TextType::class, array(
-            'label'=> 'Date d\'anniversaire',
+            'label_format' => '%name%',
             'attr' => array('class' => 'datepickerBirthday', 
                             'type' => 'date')))
         ->add('bookdate', TextType::class, array(
-            'label'=> 'Date de réservation',
+            'label_format' => '%name%',
             'attr' => array('class' => 'datepickerBookdate', 
                             'type' => 'date',
                             'value'=>$today->format('d-m-Y'),
@@ -49,15 +49,15 @@ class TicketType extends AbstractType
         ->add('reduced', CheckboxType::class, array(
             'attr' => array('class' => 'reduced',
                             'onchange'=>'handleChange(this)'),
-            'label'    => 'Tarif réduit ',
+            'label_format' => '%name%',
             'required' => false,))
         ->add('halfday', CheckboxType::class, array(
-            'label'    => 'Demi-journée ',
+            'label_format' => '%name%',
             'required' => false,
             'attr'=>$halfday_attr)
             )
         ->add('country', TextType::class, array(
-            'label'    => 'Pays',
+           'label_format' => '%name%',
             'required' => true,));
     }
     

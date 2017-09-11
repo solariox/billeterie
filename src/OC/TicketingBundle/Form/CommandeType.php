@@ -36,7 +36,7 @@ class CommandeType extends AbstractType
         ->add('email',EmailType::class)
         ->add('save', SubmitType::class, array(
              'attr' => array('class' => 'btn btn-success'),
-            'label'=>'Passer la commande'));
+            'label_format' => '%name%'));
     }
     
     /**

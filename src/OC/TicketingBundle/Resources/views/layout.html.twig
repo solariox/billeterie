@@ -1,23 +1,21 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{% block title %}Billeterie du louvre{% endblock %}</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {% block stylesheets %}
-      {# On charge le CSS de bootstrap depuis le site directement #}
-      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    {% endblock %}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}" >
-  </head>
+  <title>{% block title %}Billeterie du louvre{% endblock %}</title>
 
-  <body>
+  {% block stylesheets %} {# On charge le CSS de bootstrap depuis le site directement #}
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> {% endblock %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+</head>
+
+<body>
   <div class="container">
-   <div class="row">
+    <div class="row">
       <div id="header" class="jumbotron col-12">
         <h1> {{ 'Bienvenue sur le site du Louvre'|trans }}</h1>
         {#<img src="{{ asset('image/louvre.jpg') }}" alt="logo louvre">#}
@@ -25,43 +23,42 @@
 
       <div class="row">
 
-        {% block javascripts %}
-        {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        {% endblock %}
-        {% block body %}
-        {% endblock %}
+        {% block javascripts %} {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter#}
+          <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+          <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        {% endblock %} 
+        {% block body %} {% endblock %}
       </div>
-     </div>
-
-      <hr> 
-
-      <footer>
-        <p>
-        
-         {% if app.request.attributes.get('_route') %}
-          {% if app.request.locale == 'fr' %}
-          <a href=" {{ path(app.request.attributes.get('_route'),{'_locale':'en'} ) }} ">
-            <img src="https://www.stickersmalin.com/images/ajoute/prd/62/62476-image2_448x448.png">
-          </a>
-          
-          {% else %}
-            <a href=" {{ path(app.request.attributes.get('_route'),{'_locale':'fr'} ) }} ">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Civil_and_Naval_Ensign_of_France.svg/langfr-225px-Civil_and_Naval_Ensign_of_France.svg.png">
-            </a>
-          {% endif %}
-        {% endif %}
-        
-          {{ 'Ce projet est élaboré par Symfony. '|trans }}
-          <br/>{{ 'Il est réalisé par Julien Marie dans le cadre du projet 4 de la formation Open Classroom. '|trans }}
-        </p>
-        
-      </footer>
     </div>
+
+    <hr>
+
+    <footer>
+      <p>
+
+        {% if app.request.attributes.get('_route') %}
+          {% if app.request.locale == 'fr' %}
+            <a href=" {{ path(app.request.attributes.get('_route'),{'_locale':'en'} ) }} ">
+                <img src="https://www.stickersmalin.com/images/ajoute/prd/62/62476-image2_448x448.png">
+            </a> 
+          {% else %}
+          <a href=" {{ path(app.request.attributes.get('_route'),{'_locale':'fr'} ) }} ">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Civil_and_Naval_Ensign_of_France.svg/langfr-225px-Civil_and_Naval_Ensign_of_France.svg.png">
+          </a>
+          {% endif %} 
+        {% endif %} 
+        
+        {{ 'Ce projet est élaboré par Symfony.'|trans }}
+        <br/>
+        {{ 'Il est réalisé par Julien Marie dans le cadre du projet 4 de la formation Open Classroom.'|trans }}
+      </p>
+
+    </footer>
   </div>
 
 
 
-  </body>
+
+</body>
+
 </html>

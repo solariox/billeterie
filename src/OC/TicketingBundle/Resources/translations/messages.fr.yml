@@ -1,1 +1,7 @@
 owner: 'Propriétaire du billet'
+ownerBirthday: "Date d'anniversaire"
+bookdate: 'Date de réservations'
+reduced: 'Tarif réduit'
+halfday: 'Demi journée'
+country: 'Pays'
+save: 'Passer la commande'

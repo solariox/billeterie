@@ -16,3 +16,9 @@
 "retour à l'accueil": 'Back to Home'
 'Whoops, il y a eu un problème ': 'Whoops, we got some trouble '
 owner: 'Owner of ticket'
+ownerBirthday: "Owner's Birthday"
+bookdate: 'Bookdate'
+reduced: 'Reduced price'
+halfday: 'Half day'
+country: 'Country'
+save : "Command"
