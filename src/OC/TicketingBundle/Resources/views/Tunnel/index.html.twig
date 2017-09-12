@@ -13,16 +13,18 @@
 </div>
 {% endfor %}
 
-
-<div class="well">
+<div class="well fadeIn">
 
   {{ form(form) }}
+
+</div>
+
 
   <div class="alert alert-warning reduced_message" style="display:none">
     <strong> {{ ' Attention ! '|trans }}</strong>{{ 'Une piece justificative vous sera demandé pour justifier le tarif réduit.
     '|trans }}
   </div>
-</div>
+  
 
 <script src=" {{ asset('js/script_index.js') }} ">
 </script>

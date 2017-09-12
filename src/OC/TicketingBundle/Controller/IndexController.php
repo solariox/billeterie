@@ -80,8 +80,8 @@ class IndexController extends Controller
             $result = $repository->findByBookdate($ticket->getBookdate());
             // Verification d'un trop de commande
             if (count($result) >1000) {
-                $this->get('session')->getFlashBag()->set('error', 'Vous ne pouvez pas reserver, trop de tickets ont été vendu ce jour. ');
-                return $this->redirectToRoute('oc_ticketing_check');
+                $this->get('session')->getFlashBag()->set('error', 'Déjà trop de tickets reservé ce jour ci.');
+                return $this->redirectToRoute('oc_ticketing_home');
             }
 
         //Si il n'y a pas de paiment à faire
